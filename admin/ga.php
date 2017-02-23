@@ -89,7 +89,7 @@ function gtm_ga_amp_page_ga_html() {
 			        <label for="gtm_ga_amp_ga_tracking_id">Tracking ID</label>
 			    </th>
 			    <td>
-			        <input type="text" name="gtm_ga_amp_ga_tracking_id" id="gtm_ga_amp_ga_tracking_id" placeholder="UA-XXXXXX-X" value="<?php echo $gtm_ga_amp_ga_tracking_id; ?>">
+			        <input type="text" name="gtm_ga_amp_ga_tracking_id" id="gtm_ga_amp_ga_tracking_id" placeholder="UA-XXXXXX-X" value="<?= isset($gtm_ga_amp_ga_tracking_id) ? esc_attr($gtm_ga_amp_ga_tracking_id) : ''; ?>">
 			        <p class="description">Your Google Analytics Tracking ID, starting with: UA-XXXXXX-X.</p>
 			    </td>
 				</tr>

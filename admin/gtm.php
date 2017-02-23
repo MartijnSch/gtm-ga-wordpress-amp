@@ -60,7 +60,7 @@ function gtm_ga_amp_page_gtm_html() {
 			        <label for="gtm_ga_amp_gtm_container_id">Container ID</label>
 			    </th>
 			    <td>
-			        <input type="text" name="gtm_ga_amp_gtm_container_id" id="gtm_ga_amp_gtm_container_id" placeholder="GTM-XXXXXX" value="<?php echo $gtm_ga_amp_gtm_container_id; ?>">
+			        <input type="text" name="gtm_ga_amp_gtm_container_id" id="gtm_ga_amp_gtm_container_id" placeholder="GTM-XXXXXX" value="<?= isset($gtm_ga_amp_gtm_container_id) ? esc_attr($gtm_ga_amp_gtm_container_id) : ''; ?>">
 			        <p class="description">Your Container ID, starting with: GTM-XXXXXX.</p>
 			    </td>
 				</tr>
