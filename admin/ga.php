@@ -1,206 +1,109 @@
 <?php
+  function gtm_ga_amp_ga_settings_init() {
+    register_setting( 'gtm_ga_amp_ga', 'gtm_ga_amp_ga' );
+
+    add_settings_section('gtm_ga_amp_ga_section_basic', __( 'Google Analytics: Settings', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_section_basic_cb', 'gtm_ga_amp_ga_basic');
+    add_settings_field('enabled', __( 'Enable Google Analytics', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_enabled_cb', 'gtm_ga_amp_ga_basic', 'gtm_ga_amp_ga_section_basic', ['label_for' => 'enabled']);
+    add_settings_field('tracking_id', __( 'Tracking ID', 'gtm_ga_amp' ), 'gtm_ga_amp_field_tracking_id_cb', 'gtm_ga_amp_ga_basic', 'gtm_ga_amp_ga_section_basic', [ 'label_for' => 'tracking_id' ]);
+
+    add_settings_section('gtm_ga_amp_ga_section_outbound', __( 'Advanced', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_section_outbound_cb', 'gtm_ga_amp_ga');
+    add_settings_field('outbound_enabled', __( 'Enable Outbound Click Tracking', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_outbound_enabled_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_outbound', ['label_for' => 'outbound_enabled']);
+
+    add_settings_section('gtm_ga_amp_ga_section_cd', __( 'Custom dimensions', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_section_cd_cb', 'gtm_ga_amp_ga');
+	  add_settings_field('cd_1', __( 'Post ID', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_1', 'placeholder' => 1]);
+	  add_settings_field('cd_2', __( 'Post Published Date', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_2', 'placeholder' => 2]);
+	  add_settings_field('cd_3', __( 'Post Author', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_3', 'placeholder' => 3]);
+	  add_settings_field('cd_4', __( 'Post Tags', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_4', 'placeholder' => 4]);
+	  add_settings_field('cd_5', __( 'Post Categories', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_5', 'placeholder' => 5]);
+	  add_settings_field('cd_6', __( 'Post Types', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_6', 'placeholder' => 6]);
+	  add_settings_field('cd_7', __( 'Post Comments', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_7', 'placeholder' => 7]);
+	  add_settings_field('cd_8', __( 'Logged In', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_8', 'placeholder' => 8]);
+		add_settings_field('cd_9', __( 'Content Length: Words', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_9', 'placeholder' => 9]);
+		add_settings_field('cd_10', __( 'Content Length: Bucket', 'gtm_ga_amp' ), 'gtm_ga_amp_ga_field_cd_cb', 'gtm_ga_amp_ga', 'gtm_ga_amp_ga_section_cd', ['label_for' => 'cd_10', 'placeholder' => 10]);
+  }
+  add_action( 'admin_init', 'gtm_ga_amp_ga_settings_init' );
+
+  // Define Sections
+	function gtm_ga_amp_ga_section_basic_cb($args) {
+  }
+
+	function gtm_ga_amp_ga_section_outbound_cb($args) {
+		esc_html_e('More settings to start measuring: clicks on outbound links.');
+  }
+
+	function gtm_ga_amp_ga_section_custom_dimensions_cb($args) {
+		esc_html_e('What custom dimensions do you want to send along to Google Analytics, configure them here:');
+  }
+
+  function gtm_ga_amp_ga_field_enabled_cb($args) {
+   $options = get_option( 'gtm_ga_amp_ga' );
+   ?>
+   <input type="checkbox" name="gtm_ga_amp_ga[<?php echo esc_attr( $args['label_for'] ); ?>]" value="1" <?php checked( $options[$args['label_for']], 1 ); ?>>
+   <?php
+  }
+
+  function gtm_ga_amp_ga_field_outbound_enabled_cb($args) {
+   $options = get_option( 'gtm_ga_amp_ga' );
+   ?>
+   <input type="checkbox" name="gtm_ga_amp_ga[<?php echo esc_attr( $args['label_for'] ); ?>]" value="1" <?php checked( $options[$args['label_for']], 1 ); ?>>
+   <p class="description">You'll find information around sharing tracking in your Event Tracking reports as: Outbound Links, Click, <a href="https://developers.google.com/analytics/devguides/collection/amp-analytics/#outbound_link_tracking">${outboundLink}</a></p>
+   <?php
+  }
+
+  function gtm_ga_amp_field_tracking_id_cb($args) {
+   $options = get_option( 'gtm_ga_amp_ga' );
+   ?>
+   <input type="text" name="gtm_ga_amp_ga[<?php echo esc_attr( $args['label_for'] ); ?>]" value="<?= isset($options[$args['label_for']]) ? esc_attr($options[$args['label_for']] ) : ''; ?>">
+   <p class="description">
+   <?php esc_html_e( 'Your Google Analytics Tracking ID, starting with: UA-XXXXXX-X.', 'gtm_ga_amp' ); ?>
+   </p>
+   <?php
+  }
+
+  function gtm_ga_amp_ga_field_cd_cb($args) {
+   $options = get_option( 'gtm_ga_amp_ga' );
+   ?>
+   <input type="text" size="4" placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>" name="gtm_ga_amp_ga[<?php echo esc_attr( $args['label_for'] ); ?>]" value="<?= isset($options[$args['label_for']]) ? esc_attr($options[$args['label_for']] ) : ''; ?>">
+   <?php
+  }
+
 /**
  * Register settings, sections, and fields.
  *
  * @since 0.0.1
  */
 function gtm_ga_amp_page_ga_html() {
-  // Check the users capabilities
-  if ( !current_user_can( 'manage_options' ) ) {
-    return;
-  }
-
-  // POST the details
-  if($_POST) {
-
-    if (!isset($_POST['gtm_ga_amp_ga_nonce']) || !wp_verify_nonce($_POST['gtm_ga_amp_ga_nonce'], plugin_basename(__FILE__))) {
+    // Check user capabilities
+    if ( ! current_user_can( 'manage_options' ) ) {
       return;
     }
 
-	  // Save the current options - needs work to use the Settings API
-	  if ($_POST['gtm_ga_amp_ga_enabled']) {
-	    update_option('gtm_ga_amp_ga_enabled', $_POST['gtm_ga_amp_ga_enabled']);
-	  } else {
-	  	update_option('gtm_ga_amp_ga_enabled', "off");
-	  }
+    // Add error/update messages
+    // Check if the user have submitted the settings
+     if ( isset( $_GET['settings-updated'] ) ) {
+       add_settings_error( 'gtm_ga_amp_messages', 'gtm_ga_amp_message', __( 'Settings Saved', 'gtm_ga_amp' ), 'updated' );
+     }
 
-	  if ($_POST['gtm_ga_amp_ga_outbound_tracking']) {
-	    update_option('gtm_ga_amp_ga_outbound_tracking', $_POST['gtm_ga_amp_ga_outbound_tracking']);
-	  } else {
-	  	update_option('gtm_ga_amp_ga_outbound_tracking', "off");
-	  }
-
-	  if (isset($_POST['gtm_ga_amp_ga_tracking_id'])) {
-	    update_option('gtm_ga_amp_ga_tracking_id', sanitize_text_field($_POST['gtm_ga_amp_ga_tracking_id']));
-	  }
-
-	  // Save the information for the 10 custom dimensions.
-	  for ($x = 1; $x <= 10; $x++) {
-	  	if (isset($_POST['gtm_ga_amp_ga_cd_'.$x])) {
-		    update_option('gtm_ga_amp_ga_cd_'.$x, sanitize_text_field($_POST['gtm_ga_amp_ga_cd_'.$x]));
-		  }
-		}
-  }
-
-  $gtm_ga_amp_ga_enabled = get_option('gtm_ga_amp_ga_enabled');
-  $gtm_ga_amp_ga_tracking_id = get_option('gtm_ga_amp_ga_tracking_id');
-
-  $gtm_ga_amp_ga_outbound_tracking = get_option('gtm_ga_amp_ga_outbound_tracking');
-
-  $gtm_ga_amp_ga_cd_1 = get_option('gtm_ga_amp_ga_cd_1');
-  $gtm_ga_amp_ga_cd_2 = get_option('gtm_ga_amp_ga_cd_2');
-  $gtm_ga_amp_ga_cd_3 = get_option('gtm_ga_amp_ga_cd_3');
-  $gtm_ga_amp_ga_cd_4 = get_option('gtm_ga_amp_ga_cd_4');
-  $gtm_ga_amp_ga_cd_5 = get_option('gtm_ga_amp_ga_cd_5');
-  $gtm_ga_amp_ga_cd_6 = get_option('gtm_ga_amp_ga_cd_6');
-  $gtm_ga_amp_ga_cd_7 = get_option('gtm_ga_amp_ga_cd_7');
-  $gtm_ga_amp_ga_cd_8 = get_option('gtm_ga_amp_ga_cd_8');
-  $gtm_ga_amp_ga_cd_9 = get_option('gtm_ga_amp_ga_cd_9');
-  $gtm_ga_amp_ga_cd_10 = get_option('gtm_ga_amp_ga_cd_10');
-?>
+    settings_errors( 'gtm_ga_amp_messages' );
+    ?>
 
   <div class="wrap">
-      <h1>Google Analytics for AMP</h2>
-      <p>This plugin will support adding Google Analytics to your AMP pages in
-      	WordPress, configure the settings here and add more information to your
-      	tracking code if needed.</p>
-      <hr>
-    	<form method="post">
-      <?php
-        wp_nonce_field(plugin_basename(__FILE__), 'gtm_ga_amp_ga_nonce');
-      ?>
-      <h2>Google Analytics: Settings</h2>
-      <table class="form-table">
-      	<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_enabled">Enable Google Analytics</label>
-			    </th>
-			    <td>
-			        <input type="checkbox" name="gtm_ga_amp_ga_enabled" id="gtm_ga_amp_ga_enabled" <?php if($gtm_ga_amp_ga_enabled == "on") { echo " checked"; } ?>>
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_tracking_id">Tracking ID</label>
-			    </th>
-			    <td>
-			        <input type="text" name="gtm_ga_amp_ga_tracking_id" id="gtm_ga_amp_ga_tracking_id" placeholder="UA-XXXXXX-X" value="<?= isset($gtm_ga_amp_ga_tracking_id) ? esc_attr($gtm_ga_amp_ga_tracking_id) : ''; ?>">
-			        <p class="description">Your Google Analytics Tracking ID, starting with: UA-XXXXXX-X.</p>
-			    </td>
-				</tr>
-			</table>
-			<hr>
-			<h3>Advanced</h3>
-			<p>More settings to start measuring: clicks on outbound links.</p>
-			<table class="form-table">
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_outbound_tracking">Enable Outbound Click Tracking</label>
-			    </th>
-			    <td>
-			        <input type="checkbox" name="gtm_ga_amp_ga_outbound_tracking" id="gtm_ga_amp_ga_outbound_tracking" <?php if($gtm_ga_amp_ga_outbound_tracking == "on") { echo " checked"; } ?>>
-			        <p class="description">You'll find information around sharing tracking in your Event Tracking reports as: Outbound Links, Click, <a href="https://developers.google.com/analytics/devguides/collection/amp-analytics/#outbound_link_tracking">${outboundLink}</a></p>
-			    </td>
-				</tr>
-      </table>
-      <hr>
-      <h3>Custom dimensions</h3>
-      <p>What custom dimensions do you want to send along to Google Analytics, configure them here:</p>
-      <table class="form-table" style="width:350px;">
-      	<tr>
-      		<th scope="row">
-      			<strong>Data Type</strong>
-      		</th>
-      		<th scope="row">
-      			<strong>Custom Dimension ID</strong>
-      		</th>
-      	</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_1">Post ID</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_1" id="gtm_ga_amp_ga_cd_1" placeholder="1" value="<?php echo $gtm_ga_amp_ga_cd_1; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_2">Post Published Date</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_2" id="gtm_ga_amp_ga_cd_2" placeholder="2" value="<?php echo $gtm_ga_amp_ga_cd_2; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_3">Post Author</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_3" id="gtm_ga_amp_ga_cd_3" placeholder="3" value="<?php echo $gtm_ga_amp_ga_cd_3; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_4">Post Tags</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_4" id="gtm_ga_amp_ga_cd_4" placeholder="4" value="<?php echo $gtm_ga_amp_ga_cd_4; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_5">Post Categories</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_5" id="gtm_ga_amp_ga_cd_5" placeholder="5" value="<?php echo $gtm_ga_amp_ga_cd_5; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_6">Post Type</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_6" id="gtm_ga_amp_ga_cd_6" placeholder="6" value="<?php echo $gtm_ga_amp_ga_cd_6; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_7">Post Comments</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_7" id="gtm_ga_amp_ga_cd_7" placeholder="7" value="<?php echo $gtm_ga_amp_ga_cd_7; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_8">Logged in</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_8" id="gtm_ga_amp_ga_cd_8" placeholder="8" value="<?php echo $gtm_ga_amp_ga_cd_8; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_9">Content Length: Words</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_9" id="gtm_ga_amp_ga_cd_9" placeholder="9" value="<?php echo $gtm_ga_amp_ga_cd_9; ?>">
-			    </td>
-				</tr>
-				<tr>
-			    <th scope="row">
-			        <label for="gtm_ga_amp_ga_cd_10">Content Length: Bucket</label>
-			    </th>
-			    <td>
-			        <input type="text" size="3" name="gtm_ga_amp_ga_cd_10" id="gtm_ga_amp_ga_cd_10" placeholder="10" value="<?php echo $gtm_ga_amp_ga_cd_10; ?>">
-			    </td>
-				</tr>
-      </table>
-      <?php
-        // output save settings button
-        submit_button('Save Changes');
-      ?>
-      </form>
+		<h1>Google Analytics for AMP</h2>
+		<p>This plugin will support adding Google Analytics to your AMP pages in
+		WordPress, configure the settings here and add more information to your
+		tracking code if needed.</p>
+		<hr>
+		<form action="options.php" method="post">
+			<?php
+			// output security fields for the registered setting "gtm_ga_amp"
+			settings_fields( 'gtm_ga_amp_ga' );
+			// output setting sections and their fields
+			// (sections are registered for "gtm_ga_amp", each field is registered to a specific section)
+			do_settings_sections( 'gtm_ga_amp_ga_basic' );
+			do_settings_sections( 'gtm_ga_amp_ga' );
+			submit_button( 'Save Changes' );
+			?>
+		</form>
   </div>
   <?php
 }
