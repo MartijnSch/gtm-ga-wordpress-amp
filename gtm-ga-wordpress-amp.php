@@ -33,6 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 require plugin_dir_path( __FILE__ ) . 'admin/dashboard.php';
 require plugin_dir_path( __FILE__ ) . 'admin/ga.php';
 require plugin_dir_path( __FILE__ ) . 'admin/gtm.php';
+require plugin_dir_path( __FILE__ ) . 'admin/misc.php';
 
 require plugin_dir_path( __FILE__ ) . 'public/ga.php';
 require plugin_dir_path( __FILE__ ) . 'public/gtm.php';
