@@ -67,11 +67,6 @@ function gtm_ga_amp_page_ga_html() {
       <hr>
     	<form method="post">
       <?php
-        // output security fields for the registered setting "wporg_options"
-        settings_fields('gtm_ga_amp_options');
-        // output setting sections and their fields
-        // (sections are registered for "wporg", each field is registered to a specific section)
-        do_settings_sections('gtm_ga_amp');
         wp_nonce_field(plugin_basename(__FILE__), 'gtm_ga_amp_ga_nonce');
       ?>
       <h2>Google Analytics: Settings</h2>

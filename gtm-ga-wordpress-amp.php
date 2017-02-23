@@ -25,10 +25,6 @@
 * see https://opensource.org/licenses/GPL-3.0.
 */
 
-// DO MORE WITH THIS:
-// https://github.com/Automattic/amp-wp/wiki/Analytics
-// https://codex.wordpress.org/Function_Reference/add_settings_field
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
   die;

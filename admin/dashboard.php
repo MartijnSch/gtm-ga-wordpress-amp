@@ -5,32 +5,22 @@
  * @since 0.0.1
  */
 function gtm_ga_amp_page_html() {
-  // Check the users capabilities
-  if ( !current_user_can( 'manage_options' ) ) {
+  // Check user capabilities
+  if ( ! current_user_can( 'manage_options' ) ) {
     return;
   }
+
+  // Add error/update messages
+  // Check if the user have submitted the settings
+   if ( isset( $_GET['settings-updated'] ) ) {
+     add_settings_error( 'gtm_ga_amp_messages', 'gtm_ga_amp_message', __( 'Settings Saved', 'gtm_ga_amp' ), 'updated' );
+   }
+ 
+  settings_errors( 'gtm_ga_amp_messages' );
 
   if($_POST) {
     if (!isset($_POST['gtm_ga_amp_dashboard_nonce']) || !wp_verify_nonce($_POST['gtm_ga_amp_dashboard_nonce'], plugin_basename(__FILE__))) {
       return;
-    }
-
-  	// Google Tag Manager
-    // Save the current options - needs work to use the Settings API
-    if ($_POST['gtm_ga_amp_gtm_enabled']) {
-      update_option('gtm_ga_amp_gtm_enabled', $_POST['gtm_ga_amp_gtm_enabled']);
-    } else {
-    	update_option('gtm_ga_amp_gtm_enabled', "off");
-    }
-
-    if (isset($_POST['gtm_ga_amp_gtm_container_id'])) {
-      update_option('gtm_ga_amp_gtm_container_id', sanitize_text_field($_POST['gtm_ga_amp_gtm_container_id']));
-    }
-
-    if ($_POST['gtm_ga_amp_gtm_amp_variables']) {
-      update_option('gtm_ga_amp_gtm_amp_variables', $_POST['gtm_ga_amp_gtm_amp_variables']);
-    } else {
-    	update_option('gtm_ga_amp_gtm_amp_variables', "off");
     }
 
 	  // Google Analytics
@@ -45,10 +35,6 @@ function gtm_ga_amp_page_html() {
 	  }
   }
 
-  $gtm_ga_amp_gtm_enabled = get_option('gtm_ga_amp_gtm_enabled');
-  $gtm_ga_amp_gtm_container_id = get_option('gtm_ga_amp_gtm_container_id');
-	$gtm_ga_amp_gtm_amp_variables = get_option('gtm_ga_amp_gtm_amp_variables');
-
   $gtm_ga_amp_ga_enabled = get_option('gtm_ga_amp_ga_enabled');
   $gtm_ga_amp_ga_tracking_id = get_option('gtm_ga_amp_ga_tracking_id');
 ?>
@@ -58,38 +44,14 @@ function gtm_ga_amp_page_html() {
     <p>This plugin will support adding Google Tag Manager and/or Google Analytics
     	 to your AMP pages in WordPress, configure the settings for both tools here.</p>
     <hr>
-  	<form method="post">
-		<?php wp_nonce_field(plugin_basename(__FILE__), 'gtm_ga_amp_dashboard_nonce'); ?>
-    <h2>Google Tag Manager: Settings</h2>
-    <table class="form-table">
-    	<tr>
-		    <th scope="row">
-		        <label for="gtm_ga_amp_gtm_enabled">Enable Google Tag Manager</label>
-		    </th>
-		    <td>
-		        <input type="checkbox" name="gtm_ga_amp_gtm_enabled" id="gtm_ga_amp_gtm_enabled" <?php if($gtm_ga_amp_gtm_enabled == "on") { echo " checked"; } ?>>
-		    </td>
-			</tr>
-			<tr>
-		    <th scope="row">
-		        <label for="gtm_ga_amp_gtm_container_id">Container ID</label>
-		    </th>
-		    <td>
-		        <input type="text" name="gtm_ga_amp_gtm_container_id" id="gtm_ga_amp_gtm_container_id" placeholder="GTM-XXXXXX" value="<?php echo $gtm_ga_amp_gtm_container_id; ?>">
-		        <p class="description">Your Container ID, starting with: GTM-XXXXXX.</p>
-		    </td>
-			</tr>
-			<tr>
-		    <th scope="row">
-		        <label for="gtm_ga_amp_gtm_amp_variables">Enable AMP Variables</label>
-		    </th>
-		    <td>
-		        <input type="checkbox" name="gtm_ga_amp_gtm_amp_variables" id="gtm_ga_amp_gtm_amp_variables" <?php if($gtm_ga_amp_gtm_amp_variables == "on") { echo " checked"; } ?>>
-		        <p class="description">The plugin will be adding AMP variables to the page, you'll be able to use them with Google Tag Manager.
-		        <br /><a href="#">Learn more about that here</a>.</p>
-		    </td>
-			</tr>
-    </table>
+  	<form action="options.php" method="post">
+		<?php
+	     // output security fields for the registered setting "gtm_ga_amp"
+	     settings_fields( 'gtm_ga_amp' );
+	     // output setting sections and their fields
+	     // (sections are registered for "gtm_ga_amp", each field is registered to a specific section)
+	     do_settings_sections( 'gtm_ga_amp' );
+     ?>
     <hr>
     <h2>Google Analytics: Settings</h2>
     <table class="form-table">
