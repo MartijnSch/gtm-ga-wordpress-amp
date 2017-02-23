@@ -5,16 +5,13 @@
 	 * @since 1.0.0
 	 */
 	function ga_enabled() {
-		$enabled = get_option('gtm_ga_amp_ga_enabled');
-		$tracking_id = get_option('gtm_ga_amp_ga_tracking_id');
+		$options = get_option('gtm_ga_amp_ga');
+		$enabled = $options['enabled'];
+		$tracking_id = $options['tracking_id'];
 
-		if(isset($enabled)) {
-			if(empty($tracking_id)) {
-				return false;
-			} else {
-				$enabled = ($enabled == "on" ? true : false);
-				return $enabled;
-			}
+		if(isset($enabled) && !empty($tracking_id)) {
+			$enabled = ($enabled == "1" ? true : false);
+			return $enabled;
 		} else {
 			return false;
 		}
@@ -24,8 +21,9 @@
 	 * Return the Page Tracking object for Google Analytics for the public interface.
 	 *
 	 * @since 1.0.0
+	 * @param $tracking_id: the tracking id for the Google Analytics object
 	 */
-	function page_tracking() {
+	function page_tracking($tracking_id) {
 
 		$trackPageview =
 			['trackPageview' => [
@@ -38,13 +36,13 @@
 		$page_tracking = [
 			'vars' => [
 				'account' =>
-					get_option('gtm_ga_amp_ga_tracking_id')
+					$tracking_id
 			],
-			'extraUrlParams' => 
+			'extraUrlParams' =>
 				printCustomDimensions()
 			,
 			'triggers' =>
-				$triggers			
+				$triggers
 		];
 
 		return $page_tracking;
@@ -56,9 +54,10 @@
 	 * @since 1.0.0
 	 */
 	function outbound_link_tracking() {
-		$enabled = get_option('gtm_ga_amp_ga_outbound_tracking');
+		$options = get_option('gtm_ga_amp_ga');
+		$enabled = $options['outbound_enabled'];
 
-		if(isset($enabled) && $enabled === "on") {
+		if(isset($enabled) && $enabled === "1") {
 			$outbound_link_tracking = [
 			'outboundLinks' => [
 					'on' => 'click',
@@ -79,12 +78,14 @@
 	 * Return the Index value of a Custom Dimension.
 	 *
 	 * @since 1.0.0
+	 * @param $index: the custom dimension index value
 	 */
 	function getCustomDimensionIndex($index) {
 		if($index) {
-			$value = get_option('gtm_ga_amp_ga_cd_'. $index);
+			$options = get_option('gtm_ga_amp_ga');
+			$value = $options['cd_'.$index];
 
-			if(!empty($value) && ($value !== "")) {
+			if(!empty($value)) {
 				return $value;
 			} else {
 				return false;
@@ -98,6 +99,7 @@
 	 * Return the value of a Custom Dimension Index.
 	 *
 	 * @since 1.0.0
+	 * @param $index: the custom dimension index value
 	 */
 	function getCustomDimensionValue($index) {
 		global $post;
@@ -175,11 +177,15 @@
 	 */
 	function amp_analytics_print_ga_scripts_body() {
 	    if(ga_enabled()) {
+
+	    		$options = get_option('gtm_ga_amp_ga');
+	    		$tracking_id = $options['tracking_id'];
+
 	        printf('<amp-analytics type="googleanalytics">
 	                <script type="application/json">
 	                    %s
 	                </script>
-	            </amp-analytics>', json_encode(page_tracking()));
+	            </amp-analytics>', json_encode(page_tracking($tracking_id)));
 	    }
 	}
 	add_action( 'amp_post_template_footer', 'amp_analytics_print_ga_scripts_body' );

@@ -12,10 +12,10 @@ function gtm_ga_amp_page_html() {
 
   // Add error/update messages
   // Check if the user have submitted the settings
-   if ( isset( $_GET['settings-updated'] ) ) {
-     add_settings_error( 'gtm_ga_amp_messages', 'gtm_ga_amp_message', __( 'Settings Saved', 'gtm_ga_amp' ), 'updated' );
-   }
- 
+  if ( isset( $_GET['settings-updated'] ) ) {
+   add_settings_error( 'gtm_ga_amp_messages', 'gtm_ga_amp_message', __( 'Settings Saved', 'gtm_ga_amp' ), 'updated' );
+  }
+
   settings_errors( 'gtm_ga_amp_messages' );
 ?>
 
@@ -25,17 +25,19 @@ function gtm_ga_amp_page_html() {
     	 to your AMP pages in WordPress, configure the settings for both tools here.</p>
     <hr>
   	<form action="options.php" method="post">
-		<?php
-			// output security fields for the registered setting "gtm_ga_amp"
-			settings_fields( 'gtm_ga_amp' );
-			do_settings_sections( 'gtm_ga_amp_ga_basic' );
-		?>
+  		<?php
+  			settings_fields( 'gtm_ga_amp_ga' );
+  			do_settings_sections( 'gtm_ga_amp_ga_basic' );
+        submit_button('Save Changes');
+  		?>
+    </form>
 		<hr>
-		<?php
-			do_settings_sections( 'gtm_ga_amp_gtm' );
-      // output save settings button
-      submit_button('Save Changes');
-    ?>
+    <form action="options.php" method="post">
+  		<?php
+        settings_fields( 'gtm_ga_amp_gtm' );
+  			do_settings_sections( 'gtm_ga_amp_gtm' );
+        submit_button('Save Changes');
+      ?>
     </form>
   </div>
   <?php

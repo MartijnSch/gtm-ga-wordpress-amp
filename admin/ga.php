@@ -100,6 +100,9 @@ function gtm_ga_amp_page_ga_html() {
 			// output setting sections and their fields
 			// (sections are registered for "gtm_ga_amp", each field is registered to a specific section)
 			do_settings_sections( 'gtm_ga_amp_ga_basic' );
+			?>
+			<hr>
+			<?php
 			do_settings_sections( 'gtm_ga_amp_ga' );
 			submit_button( 'Save Changes' );
 			?>

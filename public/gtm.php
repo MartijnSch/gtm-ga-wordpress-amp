@@ -5,16 +5,13 @@
 	 * @since 1.0.0
 	 */
 	function gtm_enabled() {
-		$enabled = get_option('gtm_ga_amp_gtm_enabled');
-		$container_id = get_option('gtm_ga_amp_gtm_container_id');
+		$options = get_option('gtm_ga_amp_gtm');
+		$enabled = $options['enabled'];
+		$container_id = $options['container_id'];
 
-		if(isset($enabled)) {
-			if(empty($container_id)) {
-				return false;
-			} else {
-				$enabled = ($enabled == "on" ? true : false);
-				return $enabled;
-			}
+		if(isset($enabled) && !empty($container_id)) {
+			$enabled = ($enabled == "1" ? true : false);
+			return $enabled;
 		} else {
 			return false;
 		}
@@ -34,7 +31,6 @@
 	}}
 	add_action( 'amp_post_template_head', 'amp_analytics_print_gtm_scripts_head' );
 
-
 	/**
 	 * Print Google's AMP Analytics (required) script at the end of the BODY.
 	 * Documentation: https://developers.google.com/analytics/devguides/collection/amp-analytics/
@@ -42,9 +38,10 @@
 	 * @since 1.0.0
 	 */
 	function amp_analytics_print_gtm_scripts_body() {
-		$gtm_tracking_id = get_option('gtm_ga_amp_gtm_container_id');
+		$options = get_option('gtm_ga_amp_gtm');
+		$container_id = $options['container_id'];
     if(gtm_enabled()) {
-      echo '<!-- Google Tag Manager --><amp-analytics config="https://www.googletagmanager.com/amp.json?id='.$gtm_tracking_id.'&gtm.url=SOURCE_URL" data-credentials="include">'.amp_analytics_amp_variables().'</amp-analytics>';
+      echo '<!-- Google Tag Manager --><amp-analytics config="https://www.googletagmanager.com/amp.json?id='.$container_id.'&gtm.url=SOURCE_URL" data-credentials="include">'.amp_analytics_amp_variables().'</amp-analytics>';
     }
 	}
 	add_action( 'amp_post_template_footer', 'amp_analytics_print_gtm_scripts_body' );
@@ -52,9 +49,10 @@
 
 	function amp_analytics_amp_variables() {
 		global $post;
-		$amp_variables_enabled = get_option('gtm_ga_amp_gtm_amp_variables');
+		$options = get_option('gtm_ga_amp_gtm');
+		$amp_variables_enabled = $options['variables'];
 
-		if(isset($amp_variables_enabled) && $amp_variables_enabled === "on") {
+		if(isset($amp_variables_enabled) && $amp_variables_enabled === "1") {
 
 			$amp_variables = [
 				'vars' => [

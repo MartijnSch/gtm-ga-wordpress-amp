@@ -56,7 +56,7 @@
 
     $WP_User = get_userdata($post->post_author);
     $author = '';
-    if (is_a($WP_User, 'WP_User')) {
+    if(is_a($WP_User, 'WP_User')) {
       $author = $WP_User->display_name;
     }
 
