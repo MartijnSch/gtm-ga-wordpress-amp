@@ -17,17 +17,17 @@ function gtm_ga_amp_page_gtm_html() {
 
     // Save the current options - needs work to use the Settings API
     if ($_POST['gtm_ga_amp_gtm_enabled']) {
-      update_option('gtm_ga_amp_gtm_enabled', trim($_POST['gtm_ga_amp_gtm_enabled']));
+      update_option('gtm_ga_amp_gtm_enabled', $_POST['gtm_ga_amp_gtm_enabled']);
     } else {
     	update_option('gtm_ga_amp_gtm_enabled', "off");
     }
 
     if (isset($_POST['gtm_ga_amp_gtm_container_id'])) {
-      update_option('gtm_ga_amp_gtm_container_id', trim($_POST['gtm_ga_amp_gtm_container_id']));
+      update_option('gtm_ga_amp_gtm_container_id', sanitize_text_field($_POST['gtm_ga_amp_gtm_container_id']));
     }
 
     if ($_POST['gtm_ga_amp_gtm_amp_variables']) {
-      update_option('gtm_ga_amp_gtm_amp_variables', trim($_POST['gtm_ga_amp_gtm_amp_variables']));
+      update_option('gtm_ga_amp_gtm_amp_variables', $_POST['gtm_ga_amp_gtm_amp_variables']);
     } else {
     	update_option('gtm_ga_amp_gtm_amp_variables', "off");
     }

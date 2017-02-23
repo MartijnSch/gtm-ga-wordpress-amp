@@ -50,7 +50,6 @@
 		return $page_tracking;
 	}
 
-
 	/**
 	 * Return if you want to add Outbound Link Tracking to the Google Analytics object.
 	 *
@@ -167,7 +166,6 @@
 	<?php
 	}}
 	add_action( 'amp_post_template_head', 'amp_analytics_print_ga_scripts_head' );
-
 
 	/**
 	 * Print Google's AMP Analytics (required) script at the end of the BODY.

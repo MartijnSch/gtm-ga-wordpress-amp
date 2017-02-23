@@ -11,7 +11,6 @@ function gtm_ga_amp_page_html() {
   }
 
   if($_POST) {
-
     if (!isset($_POST['gtm_ga_amp_dashboard_nonce']) || !wp_verify_nonce($_POST['gtm_ga_amp_dashboard_nonce'], plugin_basename(__FILE__))) {
       return;
     }
@@ -25,7 +24,7 @@ function gtm_ga_amp_page_html() {
     }
 
     if (isset($_POST['gtm_ga_amp_gtm_container_id'])) {
-      update_option('gtm_ga_amp_gtm_container_id', $_POST['gtm_ga_amp_gtm_container_id']);
+      update_option('gtm_ga_amp_gtm_container_id', sanitize_text_field($_POST['gtm_ga_amp_gtm_container_id']));
     }
 
     if ($_POST['gtm_ga_amp_gtm_amp_variables']) {
@@ -42,7 +41,7 @@ function gtm_ga_amp_page_html() {
 	  }
 
 	  if (isset($_POST['gtm_ga_amp_ga_tracking_id'])) {
-	    update_option('gtm_ga_amp_ga_tracking_id', $_POST['gtm_ga_amp_ga_tracking_id']);
+	    update_option('gtm_ga_amp_ga_tracking_id', sanitize_text_field($_POST['gtm_ga_amp_ga_tracking_id']));
 	  }
   }
 

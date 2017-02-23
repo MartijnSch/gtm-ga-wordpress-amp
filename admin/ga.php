@@ -31,39 +31,15 @@ function gtm_ga_amp_page_ga_html() {
 	  }
 
 	  if (isset($_POST['gtm_ga_amp_ga_tracking_id'])) {
-	    update_option('gtm_ga_amp_ga_tracking_id', $_POST['gtm_ga_amp_ga_tracking_id']);
+	    update_option('gtm_ga_amp_ga_tracking_id', sanitize_text_field($_POST['gtm_ga_amp_ga_tracking_id']));
 	  }
 
-	  if (isset($_POST['gtm_ga_amp_ga_cd_1'])) {
-	    update_option('gtm_ga_amp_ga_cd_1', $_POST['gtm_ga_amp_ga_cd_1']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_2'])) {
-	    update_option('gtm_ga_amp_ga_cd_2', $_POST['gtm_ga_amp_ga_cd_2']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_3'])) {
-	    update_option('gtm_ga_amp_ga_cd_3', $_POST['gtm_ga_amp_ga_cd_3']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_4'])) {
-	    update_option('gtm_ga_amp_ga_cd_4', $_POST['gtm_ga_amp_ga_cd_4']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_5'])) {
-	    update_option('gtm_ga_amp_ga_cd_5', $_POST['gtm_ga_amp_ga_cd_5']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_6'])) {
-	    update_option('gtm_ga_amp_ga_cd_6', $_POST['gtm_ga_amp_ga_cd_6']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_7'])) {
-	    update_option('gtm_ga_amp_ga_cd_7', $_POST['gtm_ga_amp_ga_cd_7']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_8'])) {
-	    update_option('gtm_ga_amp_ga_cd_8', $_POST['gtm_ga_amp_ga_cd_8']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_9'])) {
-	    update_option('gtm_ga_amp_ga_cd_9', $_POST['gtm_ga_amp_ga_cd_9']);
-	  }
-	  if (isset($_POST['gtm_ga_amp_ga_cd_10'])) {
-	    update_option('gtm_ga_amp_ga_cd_10', $_POST['gtm_ga_amp_ga_cd_10']);
-	  }
+	  // Save the information for the 10 custom dimensions.
+	  for ($x = 1; $x <= 10; $x++) {
+	  	if (isset($_POST['gtm_ga_amp_ga_cd_'.$x])) {
+		    update_option('gtm_ga_amp_ga_cd_'.$x, sanitize_text_field($_POST['gtm_ga_amp_ga_cd_'.$x]));
+		  }
+		}
   }
 
   $gtm_ga_amp_ga_enabled = get_option('gtm_ga_amp_ga_enabled');
