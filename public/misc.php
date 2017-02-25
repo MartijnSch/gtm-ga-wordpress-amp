@@ -4,7 +4,7 @@
    *
    * @since 1.0.0
    */
-  function get_content_length_bucket() {
+  function gtm_ga_amp_get_content_length_bucket() {
   	global $post;
     $words = str_word_count($post->post_content);
 
@@ -34,7 +34,7 @@
    *
    * @since 1.0.0
    */
-  function get_post_tags() {
+  function gtm_ga_amp_get_post_tags() {
     global $post;
 
     $tags = [];
@@ -51,7 +51,7 @@
    *
    * @since 1.0.0
    */
-  function get_post_author() {
+  function gtm_ga_amp_get_post_author() {
     global $post;
 
     $WP_User = get_userdata($post->post_author);
@@ -68,7 +68,7 @@
    *
    * @since 1.0.0
    */
-  function get_post_categories() {
+  function gtm_ga_amp_get_post_categories() {
     global $post;
 
     $categories = get_the_category($post->ID);

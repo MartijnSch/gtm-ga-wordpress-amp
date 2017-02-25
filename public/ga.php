@@ -4,7 +4,7 @@
 	 *
 	 * @since 1.0.0
 	 */
-	function ga_enabled() {
+	function gtm_ga_amp_ga_enabled() {
 		$options = get_option('gtm_ga_amp_ga');
 		$enabled = $options['enabled'];
 		$tracking_id = $options['tracking_id'];
@@ -23,7 +23,7 @@
 	 * @since 1.0.0
 	 * @param $tracking_id: the tracking id for the Google Analytics object
 	 */
-	function page_tracking($tracking_id) {
+	function gtm_ga_amp_page_tracking($tracking_id) {
 
 		$trackPageview =
 			['trackPageview' => [
@@ -31,7 +31,7 @@
 				'request' => 'pageview'
 			]];
 
-		$triggers = array_merge($trackPageview, outbound_link_tracking());
+		$triggers = array_merge($trackPageview, gtm_ga_amp_outbound_link_tracking());
 
 		$page_tracking = [
 			'vars' => [
@@ -39,7 +39,7 @@
 					$tracking_id
 			],
 			'extraUrlParams' =>
-				printCustomDimensions()
+				gtm_ga_amp_printCustomDimensions()
 			,
 			'triggers' =>
 				$triggers
@@ -53,7 +53,7 @@
 	 *
 	 * @since 1.0.0
 	 */
-	function outbound_link_tracking() {
+	function gtm_ga_amp_outbound_link_tracking() {
 		$options = get_option('gtm_ga_amp_ga');
 		$enabled = $options['outbound_enabled'];
 
@@ -80,7 +80,7 @@
 	 * @since 1.0.0
 	 * @param $index: the custom dimension index value
 	 */
-	function getCustomDimensionIndex($index) {
+	function gtm_ga_amp_getCustomDimensionIndex($index) {
 		if($index) {
 			$options = get_option('gtm_ga_amp_ga');
 			$value = $options['cd_'.$index];
@@ -101,7 +101,7 @@
 	 * @since 1.0.0
 	 * @param $index: the custom dimension index value
 	 */
-	function getCustomDimensionValue($index) {
+	function gtm_ga_amp_getCustomDimensionValue($index) {
 		global $post;
 
 		switch ($index) {
@@ -112,13 +112,13 @@
 				return date('Y-m-d H:i', strtotime($post->post_date));
 				break;
 			case "3":
-				return get_post_author();
+				return gtm_ga_amp_get_post_author();
 				break;
 			case "4":
-				return get_post_tags();
+				return gtm_ga_amp_get_post_tags();
 				break;
 			case "5":
-				return get_post_categories();
+				return gtm_ga_amp_get_post_categories();
 				break;
 			case "6":
 				return $post->post_type;
@@ -133,7 +133,7 @@
 				return str_word_count($post->post_content);
 				break;
 			case "10":
-				return get_content_length_bucket();
+				return gtm_ga_amp_get_content_length_bucket();
 				break;
 		}
 	}
@@ -143,12 +143,12 @@
 	 *
 	 * @since 1.0.0
 	 */
-	function printCustomDimensions() {
+	function gtm_ga_amp_printCustomDimensions() {
 		$dimensions = array();
 
 		for ($x = 1; $x <= 10; $x++) {
 	    if(getCustomDimensionIndex($x)) {
-	    	$dimensions['cd'.getCustomDimensionIndex($x)] = getCustomDimensionValue($x);
+	    	$dimensions['cd'.gtm_ga_amp_getCustomDimensionIndex($x)] = gtm_ga_amp_getCustomDimensionValue($x);
 	    }
 		}
 
@@ -161,13 +161,13 @@
 	 *
 	 * @since 1.0.0
 	 */
-	function amp_analytics_print_ga_scripts_head(){
-	    if(ga_enabled()) {
+	function gtm_ga_amp_print_ga_scripts_head(){
+	    if(gtm_ga_amp_ga_enabled()) {
 	?>
 	    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
 	<?php
 	}}
-	add_action( 'amp_post_template_head', 'amp_analytics_print_ga_scripts_head' );
+	add_action( 'amp_post_template_head', 'gtm_ga_amp_print_ga_scripts_head' );
 
 	/**
 	 * Print Google's AMP Analytics (required) script at the end of the BODY.
@@ -175,8 +175,8 @@
 	 *
 	 * @since 1.0.0
 	 */
-	function amp_analytics_print_ga_scripts_body() {
-	    if(ga_enabled()) {
+	function gtm_ga_amp_print_ga_scripts_body() {
+	    if(gtm_ga_amp_ga_enabled()) {
 
 	    		$options = get_option('gtm_ga_amp_ga');
 	    		$tracking_id = $options['tracking_id'];
@@ -185,8 +185,8 @@
 	                <script type="application/json">
 	                    %s
 	                </script>
-	            </amp-analytics>', json_encode(page_tracking($tracking_id)));
+	            </amp-analytics>', json_encode(gtm_ga_amp_page_tracking($tracking_id)));
 	    }
 	}
-	add_action( 'amp_post_template_footer', 'amp_analytics_print_ga_scripts_body' );
+	add_action( 'amp_post_template_footer', 'gtm_ga_amp_print_ga_scripts_body' );
 ?>
